@@ -1,0 +1,40 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtualenv
+venv/
+env/
+.venv/
+.env
+.env.*
+
+# Editor/IDE stuff
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and runtime files
+*.log
+*.sqlite3
+*.db
+
+# Testing artifacts
+.coverage
+htmlcov/
+coverage.xml
+pytest_cache/
+.tox/
+.mypy_cache/
+
+# Build/dist artifacts
+build/
+dist/
+*.egg-info/
+
+# Docker related
+Dockerfile.*
+docker-compose.override.yml
