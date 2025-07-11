@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from fastapi import HTTPException, Request
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
@@ -115,35 +116,38 @@ class ResponseBuilder:
 class ResponseHandler:
     """
     Handler for converting API responses to HTTP responses.
-    
+
     This class manages the conversion of ApiResponse objects to FastAPI
-    JSONResponse objects with appropriate HTTP status codes.
+    JSONResponse objects with appropriate HTTP status codes and proper encoding.
     """
-    
+
     @staticmethod
     def create_response(api_response: ApiResponse, status_code: int = None) -> JSONResponse:
         """
         Convert ApiResponse to JSONResponse with appropriate status code.
-        
+
+        Handles serialization of non-JSON-native types such as datetime using
+        FastAPI's jsonable_encoder to ensure the response is valid.
+
         Args:
             api_response: The standardized API response object
             status_code: Optional HTTP status code override
-            
+
         Returns:
             JSONResponse: FastAPI JSON response ready for return
         """
-        # Determine status code based on response success
+        # Determine status code based on response success if not provided
         status_code = status_code if status_code is not None else (200 if api_response.success else 500)
-        
-        # Create response with proper headers
+
+        # Serialize the response using FastAPI's encoder to handle datetime and other non-serializable types
         response = JSONResponse(
-            content=api_response.dict(),
+            content=jsonable_encoder(api_response),
             status_code=status_code
         )
-        
-        # Add request ID to response headers for tracing
+
+        # Add request ID to response headers for tracing/debugging purposes
         response.headers["X-Request-ID"] = api_response.request_id
-        
+
         return response
 
 

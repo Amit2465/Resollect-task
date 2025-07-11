@@ -9,8 +9,9 @@ It exposes:
 - `ASYNC_DATABASE_URL`: fully composed SQLAlchemy-compatible async PostgreSQL connection URL.
 """
 
-from pydantic_settings import BaseSettings
 from functools import lru_cache
+
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -32,6 +33,7 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
+    SECRET_KEY: str
 
     class Config:
         # Auto-load this file for environment variables
