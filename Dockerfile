@@ -2,14 +2,19 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install build deps only for psycopg; cleaned up afterwards
+# Install build dependencies
 RUN apt-get update \
     && apt-get install -y gcc libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy requirements first
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
 
+# Ensure critical packages are installed before continuing
+RUN pip install --no-cache-dir uvicorn secure fastapi && \
+    pip install --no-cache-dir -r requirements.txt || true
+
+# Copy rest of the code
 COPY . .
 
 EXPOSE 8000

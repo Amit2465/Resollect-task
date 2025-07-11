@@ -11,6 +11,7 @@ env/
 .env
 .env.*
 
+.github/
 # Editor/IDE stuff
 .vscode/
 .idea/
@@ -24,7 +25,6 @@ env/
 logs/
 
 # Testing artifacts
-.coverage
 htmlcov/
 coverage.xml
 pytest_cache/
@@ -32,10 +32,8 @@ pytest_cache/
 .mypy_cache/
 
 # Build/dist artifacts
-build/
 dist/
 *.egg-info/
 
 # Docker related
-Dockerfile.*
 docker-compose.override.yml
