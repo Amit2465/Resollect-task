@@ -21,6 +21,7 @@ env/
 *.log
 *.sqlite3
 *.db
+logs/
 
 # Testing artifacts
 .coverage
