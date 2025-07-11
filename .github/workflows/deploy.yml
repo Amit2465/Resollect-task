@@ -18,18 +18,36 @@ jobs:
       - name: List project files (for debugging)
         run: ls -la
 
-      - name: Copy project files to EC2 (including .env)
+      - name: Copy project files to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
           username: ubuntu
           key: ${{ secrets.DEPLOY_KEY }}
-          source: |
-            app
-            .env
-            docker-compose.yml
-            requirements.txt
+          source: "."
           target: "~/app"
+
+      - name: Create .env file on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cat <<EOF > ~/app/.env
+            # PostgreSQL
+            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+            POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+
+            # JWT Secret
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
+
+            # Redis
+            REDIS_URL=${{ secrets.REDIS_URL }}
+            EOF
 
       - name: Run Docker Compose on EC2
         uses: appleboy/ssh-action@master
@@ -49,7 +67,5 @@ jobs:
             echo "Stopping any running containers..."
             docker-compose down || true
 
-            echo "Starting containers in detached mode..."
+            echo "Starting containers..."
             docker-compose up -d --build
-
-            echo "Deployment complete."
