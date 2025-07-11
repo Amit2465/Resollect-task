@@ -28,16 +28,22 @@ class Settings(BaseSettings):
         POSTGRES_HOST (str): Hostname of the PostgreSQL service (e.g. "localhost" or "db" in Docker).
         POSTGRES_PORT (int): Port number for PostgreSQL (default: 5432).
     """
+
     POSTGRES_DB: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
+
+    # Secret key for cryptographic operations
     SECRET_KEY: str
+
+    # Redis settings for rate limiter
+    REDIS_URL: str = "redis://redis:6379"
 
     class Config:
         # Auto-load this file for environment variables
-        env_file = ".env"  
+        env_file = ".env"
 
 
 @lru_cache()
