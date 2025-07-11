@@ -8,8 +8,7 @@ __pycache__/
 venv/
 env/
 .venv/
-.env
-.env.*
+
 
 .github/
 # Editor/IDE stuff

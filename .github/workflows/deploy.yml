@@ -21,7 +21,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ubuntu
           key: ${{ secrets.DEPLOY_KEY }}
-          source: "." # DO NOT include .env
+          source: "." 
           target: "~/app"
 
       - name: Run Docker Compose on EC2
@@ -34,14 +34,12 @@ jobs:
             cd ~/app
             echo "Creating .env file on EC2"
             cat <<EOF > .env
-            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            POSTGRES_HOST=localhost
-            POSTGRES_PORT=5432
             SECRET_KEY=${{ secrets.SECRET_KEY }}
             REDIS_URL=redis://redis:6379
             EOF
 
+            
             docker-compose down
+
+            # Build and start new containers
             docker-compose up -d --build

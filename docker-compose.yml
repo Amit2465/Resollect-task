@@ -25,12 +25,14 @@ services:
     restart: unless-stopped
     ports:
       - "5432:5432"
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: TaskEngineDB
+      POSTGRES_USER: Amit
+      POSTGRES_PASSWORD: Test
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U Amit -d TaskEngineDB"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -52,6 +54,21 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
+    networks:
+      - backend
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: alembic upgrade head
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_DB: TaskEngineDB
+      POSTGRES_USER: Amit
+      POSTGRES_PASSWORD: Test
     networks:
       - backend
 

@@ -29,13 +29,7 @@ class Settings(BaseSettings):
         POSTGRES_PORT (int): Port number for PostgreSQL (default: 5432).
     """
 
-    POSTGRES_DB: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_HOST: str = "localhost"
-    POSTGRES_PORT: int = 5432
-
-    # Secret key for cryptographic operations
+      # Secret key for cryptographic operations
     SECRET_KEY: str
 
     # Redis settings for rate limiter
@@ -60,11 +54,11 @@ def get_settings() -> Settings:
 # Load the singleton settings object
 settings = get_settings()
 
-# Construct the async database URL used by SQLAlchemy
-ASYNC_DATABASE_URL = (
-    f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}"
-    f"@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
-)
+# Hardcoded PostgreSQL connection URL (edit as needed)
+ASYNC_DATABASE_URL = "postgresql+asyncpg://Amit:Test@db:5432/TaskEngineDB"
+
+print(ASYNC_DATABASE_URL)  
+
 """
 SQLAlchemy async-compatible database connection URL string.
 
