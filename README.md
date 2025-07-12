@@ -79,7 +79,7 @@ Delete a task owned by the current user.
 
 ### 1. Clone the Repository
 ```bash
-git clone <repo-url>
+git clone https://github.com/Amit2465/Resollect-task.git
 cd Resollect-task
 ```
 
@@ -97,7 +97,7 @@ pip install -r requirements.txt
 ### 3. Configure Environment Variables
 Create a `.env` file in the project root for local development:
 ```env
-SECRET_KEY=some_secret_key
+SECRET_KEY=some_secret_key # This is for password Hashing 
 REDIS_URL=redis://localhost:6379
 ```
 Database settings are managed by Docker Compose and do not need to be set in `.env` for local Docker runs.
